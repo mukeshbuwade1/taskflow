@@ -15,7 +15,7 @@ services:
     build:
       context: ./client
       args:
-        REACT_APP_API_URL: http://localhost:5000/api
+        REACT_APP_API_URL: https://taskflow-be49.onrender.com/api
     container_name: taskflow-client
     ports:
       - '80:80'
