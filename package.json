@@ -1,0 +1,17 @@
+{
+  "name": "task-management-app",
+  "version": "1.0.0",
+  "description": "Full-stack Task Management Application — React + Node.js + MongoDB",
+  "private": true,
+  "scripts": {
+    "dev": "concurrently --kill-others-on-fail \"npm run dev:server\" \"npm run dev:client\"",
+    "dev:server": "cd server && npm run dev",
+    "dev:client": "cd client && yarn start",
+    "install:all": "npm install && cd server && npm install && cd ../client && yarn install",
+    "build:client": "cd client && yarn build",
+    "start:server": "cd server && npm start"
+  },
+  "devDependencies": {
+    "concurrently": "^9.2.1"
+  }
+}
