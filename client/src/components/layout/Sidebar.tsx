@@ -57,10 +57,10 @@ const Sidebar = ({ isOpen, onClose }: SidebarProps) => {
         className={[
           'fixed top-0 bottom-0 left-0 z-30',
           'w-[240px] flex flex-col',
-          'bg-sidebar shadow-sidebar',
+          'bg-sidebar',
           'transition-transform duration-300 ease-in-out',
-          'lg:static lg:z-auto lg:translate-x-0 lg:flex-shrink-0',
-          isOpen ? 'translate-x-0' : '-translate-x-full',
+          'lg:static lg:z-auto lg:translate-x-0 lg:flex-shrink-0 lg:shadow-sidebar',
+          isOpen ? 'translate-x-0 shadow-sidebar' : '-translate-x-full shadow-none',
         ].join(' ')}
       >
         {/* User info */}

@@ -6,20 +6,21 @@ A production-ready full-stack Task Management Web Application built with React.j
 
 ## Tech Stack
 
-| Layer | Technologies |
-|---|---|
+| Layer    | Technologies                                                   |
+| -------- | -------------------------------------------------------------- |
 | Frontend | React 19, React Router v7, Tailwind CSS v3, Axios, Context API |
-| Backend | Node.js 24, Express 5, Mongoose 9, JWT, bcryptjs |
-| Database | MongoDB Atlas (cloud) |
-| Security | helmet, express-rate-limit, express-validator, CORS |
-| API Docs | Swagger UI (swagger-jsdoc + swagger-ui-express) |
-| DevOps | Docker, Docker Compose, concurrently |
+| Backend  | Node.js 24, Express 5, Mongoose 9, JWT, bcryptjs               |
+| Database | MongoDB Atlas (cloud)                                          |
+| Security | helmet, express-rate-limit, express-validator, CORS            |
+| API Docs | Swagger UI (swagger-jsdoc + swagger-ui-express)                |
+| DevOps   | Docker, Docker Compose, concurrently                           |
 
 ---
 
 ## Features
 
 **Core:**
+
 - User registration & login with JWT authentication
 - Create, read, update, and delete tasks
 - Toggle task status (Pending ↔ Completed)
@@ -28,6 +29,7 @@ A production-ready full-stack Task Management Web Application built with React.j
 - Fully responsive UI (desktop + mobile)
 
 **Bonus:**
+
 - Dark mode (system preference + manual toggle, persisted)
 - Swagger API documentation at `/api-docs`
 - Docker + Docker Compose setup
@@ -58,7 +60,7 @@ task-management-app/
 │   │   ├── models/          # User, Task
 │   │   ├── routes/          # auth, task routes
 │   │   └── utils/           # apiResponse
-│   ├── server.js
+│   ├── server.ts
 │   └── Dockerfile
 │
 ├── docker-compose.yml
@@ -70,6 +72,7 @@ task-management-app/
 ## Quick Start (Local Development)
 
 ### Prerequisites
+
 - Node.js 18+
 - Yarn (client) / npm (server)
 - MongoDB Atlas account (free tier)
@@ -77,8 +80,8 @@ task-management-app/
 ### 1. Clone and install dependencies
 
 ```bash
-git clone <your-repo-url>
-cd task-management-app
+git clone https://github.com/mukeshbuwade1/taskflow.git
+cd taskflow
 npm run install:all
 ```
 
@@ -122,7 +125,7 @@ npm run seed:admin
 This creates:
 
 | Field    | Value           |
-|----------|-----------------|
+| -------- | --------------- |
 | Name     | Admin           |
 | Email    | admin@gmail.com |
 | Password | 123456          |
@@ -137,10 +140,7 @@ To promote an existing user to admin, insert directly in MongoDB Atlas:
 
 ```js
 // MongoDB Shell / Atlas Data Explorer
-db.users.updateOne(
-  { email: "admin@gmail.com" },
-  { $set: { role: "admin" } }
-)
+db.users.updateOne({ email: "admin@gmail.com" }, { $set: { role: "admin" } });
 ```
 
 ---
@@ -167,50 +167,51 @@ All task endpoints require `Authorization: Bearer <token>` header.
 
 ### Auth
 
-| Method | Endpoint | Auth | Description |
-|---|---|---|---|
-| POST | /api/auth/register | No | Register new user |
-| POST | /api/auth/login | No | Login → returns JWT |
-| GET | /api/auth/me | Yes | Get current user |
-| PUT | /api/auth/profile | Yes | Update display name |
-| PUT | /api/auth/password | Yes | Change password |
+| Method | Endpoint           | Auth | Description         |
+| ------ | ------------------ | ---- | ------------------- |
+| POST   | /api/auth/register | No   | Register new user   |
+| POST   | /api/auth/login    | No   | Login → returns JWT |
+| GET    | /api/auth/me       | Yes  | Get current user    |
+| PUT    | /api/auth/profile  | Yes  | Update display name |
+| PUT    | /api/auth/password | Yes  | Change password     |
 
 ### Tasks
 
-| Method | Endpoint | Auth | Description |
-|---|---|---|---|
-| GET | /api/tasks | Yes | List tasks (filter, search, paginate) |
-| POST | /api/tasks | Yes | Create task |
-| GET | /api/tasks/:id | Yes | Get single task |
-| PUT | /api/tasks/:id | Yes | Update task |
-| PATCH | /api/tasks/:id/toggle | Yes | Toggle pending/completed |
-| DELETE | /api/tasks/:id | Yes | Delete task |
+| Method | Endpoint              | Auth | Description                           |
+| ------ | --------------------- | ---- | ------------------------------------- |
+| GET    | /api/tasks            | Yes  | List tasks (filter, search, paginate) |
+| POST   | /api/tasks            | Yes  | Create task                           |
+| GET    | /api/tasks/:id        | Yes  | Get single task                       |
+| PUT    | /api/tasks/:id        | Yes  | Update task                           |
+| PATCH  | /api/tasks/:id/toggle | Yes  | Toggle pending/completed              |
+| DELETE | /api/tasks/:id        | Yes  | Delete task                           |
 
 ### Dashboard
 
-| Method | Endpoint | Auth | Description |
-|---|---|---|---|
-| GET | /api/dashboard | Yes | Stats, charts data, today/overdue/high-priority task previews |
+| Method | Endpoint       | Auth | Description                                                   |
+| ------ | -------------- | ---- | ------------------------------------------------------------- |
+| GET    | /api/dashboard | Yes  | Stats, charts data, today/overdue/high-priority task previews |
 
 ### Other
 
-| Method | Endpoint | Auth | Description |
-|---|---|---|---|
-| GET | /api/health | No | Health check |
-| GET | /api-docs | No | Swagger UI (OpenAPI 3.0) |
+| Method | Endpoint    | Auth | Description              |
+| ------ | ----------- | ---- | ------------------------ |
+| GET    | /api/health | No   | Health check             |
+| GET    | /api-docs   | No   | Swagger UI (OpenAPI 3.0) |
 
 **GET /api/tasks query parameters:**
 
-| Param | Type | Default | Description |
-|---|---|---|---|
-| status | string | all | `all`, `pending`, `completed` |
-| search | string | — | Search in title & description |
-| page | number | 1 | Page number |
-| limit | number | 10 | Items per page (max 50) |
+| Param  | Type   | Default   | Description                                 |
+| ------ | ------ | --------- | ------------------------------------------- |
+| status | string | all       | `all`, `pending`, `completed`               |
+| search | string | —         | Search in title & description               |
+| page   | number | 1         | Page number                                 |
+| limit  | number | 10        | Items per page (max 50)                     |
 | sortBy | string | createdAt | `createdAt`, `dueDate`, `priority`, `title` |
-| order | string | desc | `asc` or `desc` |
+| order  | string | desc      | `asc` or `desc`                             |
 
 **Response envelope:**
+
 ```json
 {
   "success": true,
@@ -224,18 +225,33 @@ All task endpoints require `Authorization: Bearer <token>` header.
 
 ## Deployment
 
-### Backend (Render / Railway)
-1. Connect your GitHub repo
-2. Set root directory to `server`
-3. Build command: `npm install`
-4. Start command: `node server.js`
-5. Add environment variables (same as `.env`)
+Live demo: **https://taskflow-client-pi46.onrender.com**
 
-### Frontend (Vercel / Netlify)
-1. Set root directory to `client`
-2. Build command: `yarn build`
-3. Output directory: `build`
-4. Add env var: `REACT_APP_API_URL=https://your-backend-url.onrender.com/api`
+Both services are deployed on [Render](https://render.com).
+
+### Backend — Render Web Service (Docker)
+
+1. New Web Service → connect GitHub repo
+2. Language: **Docker**, Root Directory: `server`
+3. Add environment variables:
+
+| Key | Value |
+|-----|-------|
+| `MONGO_URI` | your Atlas connection string |
+| `JWT_SECRET` | strong random secret |
+| `JWT_EXPIRE` | `7d` |
+| `NODE_ENV` | `production` |
+| `CLIENT_URL` | your frontend Render URL |
+| `PORT` | `5000` |
+
+### Frontend — Render Static Site
+
+1. New Static Site → connect GitHub repo
+2. Root Directory: `client`
+3. Build command: `yarn install && yarn build`
+4. Publish directory: `build`
+5. Add env var: `REACT_APP_API_URL=https://<your-backend>.onrender.com/api`
+6. Redirects/Rewrites: add rule `/*` → `/index.html` (Action: **Rewrite**) for SPA routing
 
 ---
 

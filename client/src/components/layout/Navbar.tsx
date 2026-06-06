@@ -95,7 +95,7 @@ const Navbar = ({ onMenuClick }: NavbarProps) => {
           </button>
 
           {notifOpen && (
-            <div className="absolute right-0 mt-2 w-72 bg-white dark:bg-[#1a1b2e] border border-gray-200 dark:border-sidebar-border rounded-xl shadow-lg p-4 z-50">
+            <div className="absolute right-0 mt-2 w-72 max-w-[calc(100vw-2rem)] bg-white dark:bg-[#1a1b2e] border border-gray-200 dark:border-sidebar-border rounded-xl shadow-lg p-4 z-50">
               <p className="text-sm font-semibold text-gray-900 dark:text-white mb-1">Notifications</p>
               <div className="flex flex-col items-center justify-center py-6 gap-2 text-gray-400 dark:text-gray-500">
                 <HiBell size={32} className="opacity-40" />

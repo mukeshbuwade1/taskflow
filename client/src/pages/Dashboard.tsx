@@ -6,7 +6,7 @@ import {
   HiCheckCircle,
   HiClock,
 } from 'react-icons/hi';
-import { Link } from 'react-router-dom';
+import { Link, useNavigate } from 'react-router-dom';
 import toast from 'react-hot-toast';
 import { getDashboard } from '../api/dashboard.api';
 import { toggleTask, createTask } from '../api/tasks.api';
@@ -38,6 +38,7 @@ const emptyDashboard: DashboardData = {
 
 const Dashboard = () => {
   const { user } = useAuth();
+  const navigate = useNavigate();
   const firstName = user?.name?.split(' ')[0] ?? 'there';
 
   const [data, setData] = useState<DashboardData>(emptyDashboard);
@@ -87,13 +88,13 @@ const Dashboard = () => {
       await createTask(form);
       toast.success('Task created!');
       setAddOpen(false);
-      load();
+      navigate('/my-tasks');
     } catch {
       toast.error('Failed to create task');
     } finally {
       setCreating(false);
     }
-  }, [load]);
+  }, [navigate]);
 
   const { statusStats, priorityStats, todayTasks, highPriorityTasks, recentCompletedTasks, dueTasks } = data;
 
@@ -103,7 +104,7 @@ const Dashboard = () => {
         <HiClipboardList size={16} />
         Task Overview
       </h2>
-      <div className="flex gap-4 justify-around">
+      <div className="flex flex-col gap-5 min-[400px]:flex-row min-[400px]:justify-around">
         <PieChart
           title="Status"
           slices={[
@@ -111,7 +112,7 @@ const Dashboard = () => {
             { value: statusStats.notStarted.count, color: '#ef4444', label: 'Not Started' },
           ]}
         />
-        <div className="w-px bg-gray-100 dark:bg-gray-700 self-stretch" />
+        <div className="hidden min-[400px]:block w-px bg-gray-100 dark:bg-gray-700 self-stretch" />
         <PieChart
           title="Priority"
           slices={[
@@ -130,14 +131,14 @@ const Dashboard = () => {
   return (
     <div className="p-4 lg:p-6 space-y-6">
       {/* Welcome header */}
-      <div className="flex items-start justify-between gap-4">
+      <div className="flex flex-col gap-3 sm:flex-row sm:items-start sm:justify-between">
         <div>
-          <h1 className="text-2xl lg:text-3xl font-bold text-gray-900 dark:text-white">
+          <h1 className="text-xl sm:text-2xl lg:text-3xl font-bold text-gray-900 dark:text-white">
             Welcome back, {firstName} 👋
           </h1>
           <p className="text-sm text-gray-500 dark:text-gray-400 mt-1">{todayLabel} · Today</p>
         </div>
-        <Button onClick={() => setAddOpen(true)} className="flex-shrink-0">
+        <Button onClick={() => setAddOpen(true)} className="self-start flex-shrink-0">
           <HiPlus size={16} />
           Add Task
         </Button>

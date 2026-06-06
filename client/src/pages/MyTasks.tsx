@@ -97,30 +97,30 @@ const MyTasks = () => {
   return (
     <div className="p-4 lg:p-6 space-y-5">
       {/* Header */}
-      <div className="flex flex-col sm:flex-row sm:items-center justify-between gap-4">
+      <div className="flex flex-col gap-3 sm:flex-row sm:items-center sm:justify-between">
         <div>
-          <h1 className="text-2xl font-bold text-gray-900 dark:text-white">My Tasks</h1>
+          <h1 className="text-xl sm:text-2xl font-bold text-gray-900 dark:text-white">My Tasks</h1>
           <p className="text-sm text-gray-500 dark:text-gray-400 mt-0.5">
             {pagination.total} task{pagination.total !== 1 ? 's' : ''} total
           </p>
         </div>
-        <Button onClick={openCreate}>
+        <Button onClick={openCreate} className="self-start flex-shrink-0">
           <HiPlus size={16} />
           New Task
         </Button>
       </div>
 
       {/* Filters + Search */}
-      <div className="flex flex-col sm:flex-row gap-3">
+      <div className="flex flex-col gap-3 sm:flex-row sm:items-center">
         <TaskFilter active={filter} onChange={handleFilterChange} />
-        <div className="relative flex-1 sm:max-w-xs">
+        <div className="relative w-full sm:flex-1 sm:max-w-xs">
           <HiSearch className="absolute left-3 top-1/2 -translate-y-1/2 text-gray-400 pointer-events-none" size={16} />
           <input
             type="text"
             placeholder="Search tasks…"
             value={search}
             onChange={handleSearch}
-            className="input-field pl-9"
+            className="input-field pl-9 w-full"
           />
         </div>
       </div>

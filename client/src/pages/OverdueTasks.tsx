@@ -1,5 +1,5 @@
 import { useState, useEffect, useCallback } from 'react';
-import { HiClock, HiPlus } from 'react-icons/hi';
+import { HiClock } from 'react-icons/hi';
 import toast from 'react-hot-toast';
 import TaskList from '../components/tasks/TaskList';
 import TaskForm from '../components/tasks/TaskForm';
@@ -15,7 +15,7 @@ const getApiError = (err: unknown, fallback: string): string => {
 };
 
 const OverdueTasks = () => {
-  const { tasks, pagination, loading, fetchTasks, addTask, editTask, removeTask, toggle } = useTasks();
+  const { tasks, pagination, loading, fetchTasks, editTask, removeTask, toggle } = useTasks();
 
   const [page, setPage]   = useState(1);
   const [limit, setLimit] = useState(10);
@@ -32,18 +32,14 @@ const OverdueTasks = () => {
 
   const handleLimitChange = useCallback((val: number) => { setLimit(val); setPage(1); }, []);
 
-  const openCreate = useCallback(() => { setEditingTask(null); setModalOpen(true); }, []);
   const openEdit   = useCallback((task: Task) => { setEditingTask(task); setModalOpen(true); }, []);
   const closeModal = useCallback(() => { setModalOpen(false); setEditingTask(null); }, []);
 
   const handleSubmit = useCallback(async (data: TaskFormData) => {
+    if (!editingTask) return;
     setSubmitLoading(true);
     try {
-      if (editingTask) {
-        await editTask(editingTask._id, data);
-      } else {
-        await addTask(data);
-      }
+      await editTask(editingTask._id, data);
       closeModal();
       load();
     } catch (err) {
@@ -51,7 +47,7 @@ const OverdueTasks = () => {
     } finally {
       setSubmitLoading(false);
     }
-  }, [editingTask, editTask, addTask, closeModal, load]);
+  }, [editingTask, editTask, closeModal, load]);
 
   const confirmDelete = useCallback(async () => {
     if (!deleteId) return;
@@ -76,20 +72,14 @@ const OverdueTasks = () => {
   return (
     <div className="p-4 lg:p-6 space-y-5">
       {/* Header */}
-      <div className="flex flex-col sm:flex-row sm:items-center justify-between gap-4">
-        <div>
-          <h1 className="text-2xl font-bold text-gray-900 dark:text-white flex items-center gap-2">
-            <HiClock className="text-red-500" />
-            Overdue Tasks
-          </h1>
-          <p className="text-sm text-gray-500 dark:text-gray-400 mt-0.5">
-            {pagination.total} overdue task{pagination.total !== 1 ? 's' : ''} — past their due date and not yet completed
-          </p>
-        </div>
-        <Button onClick={openCreate}>
-          <HiPlus size={16} />
-          New Task
-        </Button>
+      <div>
+        <h1 className="text-xl sm:text-2xl font-bold text-gray-900 dark:text-white flex items-center gap-2">
+          <HiClock className="text-red-500" />
+          Overdue Tasks
+        </h1>
+        <p className="text-sm text-gray-500 dark:text-gray-400 mt-0.5">
+          {pagination.total} overdue task{pagination.total !== 1 ? 's' : ''} — past their due date and not yet completed
+        </p>
       </div>
 
       {/* Banner when no overdue tasks */}
@@ -118,7 +108,7 @@ const OverdueTasks = () => {
         onLimitChange={handleLimitChange}
       />
 
-      <Modal isOpen={modalOpen} onClose={closeModal} title={editingTask ? 'Edit Task' : 'New Task'}>
+      <Modal isOpen={modalOpen} onClose={closeModal} title="Edit Task">
         <TaskForm task={editingTask} onSubmit={handleSubmit} onCancel={closeModal} loading={submitLoading} />
       </Modal>
 
