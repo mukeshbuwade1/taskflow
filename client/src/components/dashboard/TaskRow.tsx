@@ -2,6 +2,8 @@ import { memo } from 'react';
 import { HiClock } from 'react-icons/hi';
 import { Task } from '../../types';
 
+const cap = (s: string) => s ? s.charAt(0).toUpperCase() + s.slice(1) : s;
+
 const STATUS_CONFIG = {
   pending:   { color: '#ef4444', label: 'Pending',   ring: 'border-red-400' },
   completed: { color: '#22c55e', label: 'Completed', ring: 'border-green-400' },
@@ -48,11 +50,11 @@ const TaskRow = ({ task, onToggle, showStatus = false }: TaskRowProps) => {
             isCompleted ? 'line-through text-gray-400' : 'text-gray-800 dark:text-white'
           }`}
         >
-          {task.title}
+          {cap(task.title)}
         </p>
         {task.description && (
           <p className="text-xs text-gray-500 dark:text-gray-400 mt-0.5 line-clamp-2">
-            {task.description}
+            {cap(task.description)}
           </p>
         )}
         <div className="flex items-center gap-2 mt-2 flex-wrap">

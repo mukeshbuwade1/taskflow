@@ -2,6 +2,8 @@ import { memo, useState, useRef, useEffect } from 'react';
 import { HiDotsVertical, HiPencil, HiTrash, HiCalendar } from 'react-icons/hi';
 import { Task, TaskPriority, TaskStatus } from '../../types';
 
+const cap = (s: string) => s ? s.charAt(0).toUpperCase() + s.slice(1) : s;
+
 const priorityStyles: Record<TaskPriority, string> = {
   low:    'bg-green-100 text-green-700 dark:bg-green-900/40 dark:text-green-400',
   medium: 'bg-yellow-100 text-yellow-700 dark:bg-yellow-900/40 dark:text-yellow-400',
@@ -67,7 +69,7 @@ const TaskCard = ({ task, onEdit, onDelete, onToggle }: TaskCardProps) => {
               isCompleted ? 'line-through text-gray-400' : ''
             }`}
           >
-            {task.title}
+            {cap(task.title)}
           </h3>
 
           {/* Three-dot menu */}
@@ -104,7 +106,7 @@ const TaskCard = ({ task, onEdit, onDelete, onToggle }: TaskCardProps) => {
 
         {task.description && (
           <p className="text-xs text-gray-500 dark:text-gray-400 mt-1 line-clamp-2">
-            {task.description}
+            {cap(task.description)}
           </p>
         )}
 
